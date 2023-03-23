@@ -6,8 +6,16 @@ import { Avatar } from '../Avatar';
 import styles from './Post.module.css';
 
 export function Post({ author, content, publishAt }) {
-  const [comments, setComments] = useState(['Que legal'])
+  const [comments, setComments] = useState(['Que legal', 'teste'])
   const [newCommentCreated, setNewCommentCreated] = useState('')
+
+  const deleteComment = (commentsToDelete) => {
+    const isCommentDelete = comments.filter(comment => {
+      return comment !== commentsToDelete
+    })
+
+    setComments(isCommentDelete)
+  }
 
   const publishedAtFormatted = format(publishAt, "d 'de' LLLL 'às' HH:mm'h'", {
     locale: ptBR
@@ -27,7 +35,14 @@ export function Post({ author, content, publishAt }) {
 
   const handleOnchangeNewComment = (event) => {
     setNewCommentCreated(event.target.value)
+    event.target.setCustomValidity('')
   }
+
+  const handleNewCommentInvalid = (event) => {
+    event.target.setCustomValidity('Este campo é obrigatório')
+  }
+
+  const isTextAreaEmpty = newCommentCreated.length === 0
 
   return (
     <article className={styles.post}>
@@ -63,9 +78,11 @@ export function Post({ author, content, publishAt }) {
           placeholder='Deixe um comentário'
           value={newCommentCreated}
           onChange={handleOnchangeNewComment}
+          required
+          onInvalid={handleNewCommentInvalid}
         />
         <footer>
-          <button type="submit">Publicar</button>
+          <button type="submit" disabled={isTextAreaEmpty}>Publicar</button>
         </footer>
       </form>
 
@@ -73,7 +90,11 @@ export function Post({ author, content, publishAt }) {
         {
           comments.map(comment => {
             return (
-              <Comment key={comment} content={comment} />
+              <Comment
+                key={comment}
+                content={comment}
+                onDeleteComment={deleteComment}
+              />
             )
           })
         }
