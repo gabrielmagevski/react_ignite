@@ -16,13 +16,17 @@ interface Content {
   content: string;
 }
 
-interface PostProps {
+export interface PostType {
+  id: number;
   author: Author;
   content: Content[];
   publishAt: Date;
 }
+interface PostProps {
+  post: PostType;
+}
 
-export function Post({ author, content, publishAt }: PostProps) {
+export function Post({ post }: PostProps) {
   const [comments, setComments] = useState(["Que legal", "teste"]);
   const [newCommentCreated, setNewCommentCreated] = useState("");
 
@@ -34,11 +38,11 @@ export function Post({ author, content, publishAt }: PostProps) {
     setComments(isCommentDelete);
   };
 
-  const publishedAtFormatted = format(publishAt, "d 'de' LLLL 'às' HH:mm'h'", {
+  const publishedAtFormatted = format(post.publishAt, "d 'de' LLLL 'às' HH:mm'h'", {
     locale: ptBR,
   });
 
-  const publishedAtDateRelativeToNow = formatDistanceToNow(publishAt, {
+  const publishedAtDateRelativeToNow = formatDistanceToNow(post.publishAt, {
     locale: ptBR,
     addSuffix: true,
   });
@@ -65,20 +69,20 @@ export function Post({ author, content, publishAt }: PostProps) {
     <article className={styles.post}>
       <header className={styles.headerPost}>
         <div className={styles.author}>
-          <Avatar src={author.avatarUrl} alt="image-profile" />
+          <Avatar src={post.author.avatarUrl} alt="image-profile" />
           <div className={styles.authorInfo}>
-            <strong>{author.name}</strong>
-            <span>{author.role}</span>
+            <strong>{post.author.name}</strong>
+            <span>{post.author.role}</span>
           </div>
         </div>
 
-        <time title={publishedAtFormatted} dateTime={publishAt.toISOString()}>
+        <time title={publishedAtFormatted} dateTime={post.publishAt.toISOString()}>
           {publishedAtDateRelativeToNow}
         </time>
       </header>
 
       <div className={styles.content}>
-        {content.map((line) => {
+        {post.content.map((line) => {
           if (line.type === "paragraph") return <p key={line.content}>{line.content}</p>;
           else if (line.type === "link")
             return (

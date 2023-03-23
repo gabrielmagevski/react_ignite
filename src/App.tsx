@@ -1,42 +1,41 @@
-import { Post } from './components/Post';
-import { Header } from './components/Header';
-import { Sidebar } from './components/Sidebar';
+import { Post, PostType } from "./components/Post";
+import { Header } from "./components/Header";
+import { Sidebar } from "./components/Sidebar";
 
-import styles from './App.module.css'
-import './global.css';
+import styles from "./App.module.css";
+import "./global.css";
 
 function App() {
-
-  const posts = [
+  const posts: PostType[] = [
     {
       id: 1,
       author: {
-        avatarUrl: 'https://github.com/gabrielmagevski.png',
-        name: 'Gabriel',
-        role: 'Developer Front-end'
+        avatarUrl: "https://github.com/gabrielmagevski.png",
+        name: "Gabriel",
+        role: "Developer Front-end",
       },
       content: [
-        { type: 'paragraph', content: 'Fala galeraa!' },
-        { type: 'paragraph', content: 'Estou no ignite!' },
-        { type: 'link', content: 'jane.design/doctorcare' },
+        { type: "paragraph", content: "Fala galeraa!" },
+        { type: "paragraph", content: "Estou no ignite!" },
+        { type: "link", content: "jane.design/doctorcare" },
       ],
-      publishAt: new Date('2023-02-10 12:00:00')
+      publishAt: new Date("2023-02-10 12:00:00"),
     },
     {
       id: 2,
       author: {
-        avatarUrl: 'https://github.com/diego3g.png',
-        name: 'Diego Fernandes',
-        role: 'CTO @Rocketseat'
+        avatarUrl: "https://github.com/diego3g.png",
+        name: "Diego Fernandes",
+        role: "CTO @Rocketseat",
       },
       content: [
-        { type: 'paragraph', content: 'Fala galeraa!' },
-        { type: 'paragraph', content: 'Estou no ignite!' },
-        { type: 'link', content: 'jane.design/doctorcare' },
+        { type: "paragraph", content: "Fala galeraa!" },
+        { type: "paragraph", content: "Estou no ignite!" },
+        { type: "link", content: "jane.design/doctorcare" },
       ],
-      publishAt: new Date('2023-02-02 12:00:00')
+      publishAt: new Date("2023-02-02 12:00:00"),
     },
-  ]
+  ];
 
   return (
     <div>
@@ -44,22 +43,13 @@ function App() {
       <div className={styles.wrapper}>
         <Sidebar />
         <main>
-          {
-            posts.map(post => {
-              return (
-                <Post
-                  key={post.id}
-                  author={post.author}
-                  content={post.content}
-                  publishAt={post.publishAt}
-                />
-              )
-            })
-          }
+          {posts.map((post) => {
+            return <Post key={post.id} post={post} />;
+          })}
         </main>
       </div>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
